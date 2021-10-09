@@ -4,8 +4,11 @@ from unittest import *
 
 
 class TestCase2(TestCase):
+    def __init__(self, *args, **kwargs):
+        super(TestCase2, self).__init__(*args, **kwargs)
+
     def assertDictStructure(self,
-                            structure: typing.Dict[typing.Hashable, typing.ClassVar], d: dict):
+                            structure: typing.Dict[typing.Hashable, type], d: dict):
         """
         Tests if a dict matches a defined structure
 
@@ -21,7 +24,7 @@ class TestCase2(TestCase):
 
     def assertDictStructureStrict(
             self,
-            structure: typing.Dict[typing.Hashable, typing.ClassVar], d: dict):
+            structure: typing.Dict[typing.Hashable, type], d: dict):
         """
         Tests if a dict matches strictly a defined structure
 

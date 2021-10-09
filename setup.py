@@ -30,9 +30,10 @@ setuptools.setup(
 
         # Unittests
         "coverage~=5.5",
+        "flake8~=3.9.2",
 
         # Libs
-        "python-dateutils~=2.8.2"
+        "python-dateutil~=2.8.2"
     ],
 
     python_requires=">=3.9",
