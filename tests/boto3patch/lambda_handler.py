@@ -4,7 +4,7 @@ import json
 import time
 import typing
 
-LAMBDA_EVENT_PATH: str = "./lambda_events"
+LAMBDA_EVENT_PATH: str = "../lambda_events"
 
 
 def load_event(event_name: str) -> typing.Dict[str, typing.Any]:

@@ -14,26 +14,36 @@ setuptools.setup(
     long_description_content_type="text/markdown",
 
     author="Hana Burtin",
+    author_email="hana@hanaburtin.net",
 
     package_dir={
-        "": "pass_store",
-        "src": "pass_store"
+        "": "src",
+        "test": "test"
     },
-    packages=setuptools.find_packages(where="pass_store"),
+    packages=setuptools.find_packages(where="src"),
 
     install_requires=[
         # CDK
         "aws-cdk.core~=1.124.0",
 
         # AWS Base
-        "boto3~=1.18.53",
-
-        # Unittests
-        "coverage~=5.5",
-        "flake8~=3.9.2",
+        "boto3~=1.18",
+        "botocore~=1.21",
 
         # Libs
-        "python-dateutil~=2.8.2"
+        "python-dateutil~=2.8",
+        "mypy",
+
+        # External Layers
+        "aws-lambda-powertools~=1.21",
+    ],
+
+    tests_require=[
+        # Unittests
+        "coverage",
+        "flake8",
+        "isort",
+        "tox",
     ],
 
     python_requires=">=3.9",
@@ -43,12 +53,8 @@ setuptools.setup(
 
         "Intended Audience :: Developers",
 
-        "Programming Language :: JavaScript",
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.9",
-
-        "Topic :: Software Development :: Code Generators",
-        "Topic :: Utilities",
 
         "Typing :: Typed",
     ],
