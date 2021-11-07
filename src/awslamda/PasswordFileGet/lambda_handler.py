@@ -171,7 +171,7 @@ def get_file(event_body: EventBody) -> typing.Dict[str, typing.Any]:
     body = s3_object["Body"].read()
     version_id = s3_object["VersionId"]
     owner = tags["TagSet"].get("Owner", "")
-    last_updated:datetime.datetime = s3_object["LastModified"]
+    last_updated: datetime.datetime = s3_object["LastModified"]
 
     return {
         "file_name": event_body.file_name,
