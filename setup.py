@@ -31,7 +31,7 @@ setuptools.setup(
         "botocore~=1.21",
 
         # Libs
-        "python-dateutil~=2.8",
+        "dateutil",
         "mypy",
 
         # External Layers
