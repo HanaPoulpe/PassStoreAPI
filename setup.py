@@ -36,6 +36,7 @@ setuptools.setup(
 
         # External Layers
         "aws-lambda-powertools~=1.21",
+        "pydantic~=1.8.2",
     ],
 
     tests_require=[

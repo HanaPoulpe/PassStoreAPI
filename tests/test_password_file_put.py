@@ -35,7 +35,6 @@ class LambdaPasswordFilePut(unittest.TestCase2):
             "owner_id": str,
             "last_updated": str,
             "version_id": str,
-            "checksum": str,
         }
         ret = b3p.lambda_handler.start_lambda(
             handler,
