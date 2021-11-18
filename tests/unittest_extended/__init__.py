@@ -1,14 +1,11 @@
 """Base importer"""
 import typing
-from unittest import *
+import unittest
 
 
-class TestCase2(TestCase):
-    def __init__(self, *args, **kwargs):
-        super(TestCase2, self).__init__(*args, **kwargs)
-
+class TestCase2(unittest.TestCase):
     def assertDictStructure(self,
-                            structure: typing.Dict[typing.Hashable, type], d: dict):
+                            structure: typing.Dict[typing.Hashable, typing.Type], d: dict):
         """
         Tests if a dict matches a defined structure
 
@@ -17,10 +14,11 @@ class TestCase2(TestCase):
         :param d: dict to compare with
         :type d: dict
         """
-        [(self.assertIn(k, d), self.assertIsInstance(v, d.pop(k)))
+        t = d.copy()
+        [(self.assertIn(k, t), self.assertIsInstance(t.pop(k), v))
          for k, v in structure.items()]
 
-        return d
+        return t
 
     def assertDictStructureStrict(
             self,

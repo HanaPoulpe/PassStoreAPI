@@ -1,17 +1,24 @@
 """Blackbox testing for API Put Password File"""
 import base64
+import logging
+
 import dateutil.parser
 import json
+import unittest
 
 import boto3patch as b3p
-import unittest_extended as unittest
+import unittest_extended as unittest2
 
 # Import test target and map handler
 import src.awslamda.PasswordFilePut.lambda_handler as trg
 handler = trg.lambda_handler
 
 
-class LambdaPasswordFilePut(unittest.TestCase2):
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+
+class LambdaPasswordFilePut(unittest2.TestCase2):
     lambda_event_name = {
         "OK": "PasswordFilePut",
         "Malformed": {
@@ -101,14 +108,13 @@ class LambdaPasswordFilePut(unittest.TestCase2):
         self.assertDictStructureStrict(expected_body, ret_body)
         self.assertEqual(428, ret_body["status_code"])
 
-    def test_list_files_malformed_request(self):
+    def test_put_files_malformed_request(self):
         """Test call to API put Password Files with malformed request"""
         expected_return = {
             "statusCode": int,
             "body": str
         }
         expected_body = {
-            "file_name": str,
             "status_code": int,
             "error_message": str,
         }

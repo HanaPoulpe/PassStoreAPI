@@ -1,3 +1,4 @@
+"""Project Setup"""
 import setuptools
 
 
@@ -18,11 +19,11 @@ setuptools.setup(
 
     package_dir={
         "": "src",
-        "test": "test"
+        "test": "test",
     },
     packages=setuptools.find_packages(where="src"),
 
-    install_requires=[
+    tests_require=[
         # CDK
         "aws-cdk.core~=1.124.0",
 
@@ -30,16 +31,6 @@ setuptools.setup(
         "boto3~=1.18",
         "botocore~=1.21",
 
-        # Libs
-        "dateutil",
-        "mypy",
-
-        # External Layers
-        "aws-lambda-powertools~=1.21",
-        "pydantic~=1.8.2",
-    ],
-
-    tests_require=[
         # Unittests
         "coverage",
         "flake8",

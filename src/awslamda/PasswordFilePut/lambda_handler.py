@@ -1,7 +1,8 @@
 """Password File PUTlambda handler"""
 import base64
 import urllib.parse
-
+from pydantic import validator
+from pydantic.error_wrappers import ValidationError
 import pydantic.dataclasses as dataclasses
 import datetime
 import functools
@@ -35,14 +36,22 @@ class InvalidChecksumError(Exception):
 
 class PasswordFile:
     """Defines the content of a password file"""
-    def __init__(self, body: str, checksum: str):
+    def __init__(self, source_dict: dict):
+        body = source_dict["body"]
+        checksum = source_dict["checksum"]
+
         self.body: bytes = base64.b64decode(body)
 
         if base64.b64decode(checksum) != hashlib.md5(self.body).digest():
             raise InvalidChecksumError("Checksum do not match file content.")
 
 
-@dataclasses.dataclass()
+class EventBodyConfig:
+    """pydantic config"""
+    arbitrary_types_allowed = True
+
+
+@dataclasses.dataclass(config=EventBodyConfig)
 class EventBody:
     """Basic Event body"""
     file_name: str
@@ -58,6 +67,11 @@ class EventBody:
             "Bucket": PASSWORD_FILE_BUCKET,
             "Key": self.file_name
         }
+
+    @validator("data", pre=True)
+    def validate_data(cls, v):
+        """Validate data"""
+        return PasswordFile(v)
 
 
 class S3Client(typing.Protocol):
@@ -75,15 +89,15 @@ def lambda_handler(event: aws_data_classes.APIGatewayProxyEvent,
     """AWS Lambda event handler"""
     # Checking Event
     logger.info("Checking event...")
-    logger.debug(json.dumps(event))
+    logger.debug(event.body)
     if event.http_method != "PUT":
         return lambda_return({
             "status_code": 405,
             "body": "Method not allow on this endpoint"
         })
     try:
-        event_body = EventBody(**json.loads(event.json_body))
-    except (json.JSONDecodeError, TypeError, InvalidChecksumError) as err:
+        event_body = EventBody(**event.json_body)
+    except (json.JSONDecodeError, TypeError, InvalidChecksumError, ValidationError) as err:
         logger.error(f"Malformed request body: {err!r}")
         return lambda_return({
             "status_code": 400,

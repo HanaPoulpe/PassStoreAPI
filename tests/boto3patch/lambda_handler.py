@@ -1,10 +1,11 @@
 """Basic lambda handler management"""
 import dataclasses
 import json
+import os
 import time
 import typing
 
-LAMBDA_EVENT_PATH: str = "../lambda_events"
+LAMBDA_EVENT_PATH: str = "tests/lambda_events"
 
 
 def load_event(event_name: str) -> typing.Dict[str, typing.Any]:
@@ -69,7 +70,17 @@ class LambdaTimeoutException(RuntimeError):
 
 
 def start_lambda(lambda_handler: typing.Callable, lambda_event_name: str,
-                 lambda_context: typing.Optional[LambdaContext] = None) -> typing.Dict:
+                 lambda_context: typing.Optional[LambdaContext] = None,
+                 lambda_environ: typing.Optional[dict[str, str]] = None) -> typing.Dict:
+    """
+    Runs an AWS lambda within provided event/context/environ
+    """
+    if not lambda_environ:
+        lambda_environ = dict()
+    getenv = os.getenv
+
+    os.getenv = lambda x, y=None: lambda_environ.get(x, getenv(x, y))
+
     """Runs a lambda"""
     event = load_event(lambda_event_name)
     if not lambda_context:
@@ -77,6 +88,8 @@ def start_lambda(lambda_handler: typing.Callable, lambda_event_name: str,
 
     lambda_context.start_time = time.time_ns() / 1000000
     r = lambda_handler(event, lambda_context)
+
+    os.getenv = getenv
     if time.time_ns() / 1000000 - lambda_context.start_time >= lambda_context.time_out:
         raise LambdaTimeoutException()
     return r

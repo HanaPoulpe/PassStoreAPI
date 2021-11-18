@@ -1,9 +1,10 @@
 """Blackbox testing for API Delete a Password File"""
 import dateutil.parser
 import json
+import unittest
 
 import boto3patch as b3p
-import unittest_extended as unittest
+import unittest_extended as unittest2
 
 # Import test target and map handler
 import src.awslamda.PasswordFileDelete.lambda_handler as trg
@@ -11,7 +12,7 @@ import src.awslamda.PasswordFileDelete.lambda_handler as trg
 handler = trg.lambda_handler
 
 
-class LambdaPasswordFileDelete(unittest.TestCase2):
+class LambdaPasswordFileDelete(unittest2.TestCase2):
     lambda_event_name = {
         "OK": "PasswordFileDelete",
         "Malformed": {
@@ -83,7 +84,6 @@ class LambdaPasswordFileDelete(unittest.TestCase2):
             "body": str
         }
         expected_body = {
-            "file_name": str,
             "status_code": int,
             "error_message": str,
         }

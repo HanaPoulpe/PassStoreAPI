@@ -60,7 +60,7 @@ def lambda_handler(event: aws_data_classes.APIGatewayProxyEvent,
     """AWS Lambda event handler"""
     # Checking Event
     logger.info("Checking event...")
-    logger.debug(json.dumps(event))
+    logger.debug(event.body)
     if event.http_method != "GET":
         return lambda_return({
             "status_code": 405,

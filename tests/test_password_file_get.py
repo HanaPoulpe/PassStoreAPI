@@ -2,22 +2,23 @@
 import base64
 import dateutil.parser
 import json
+import unittest
 
 import boto3patch as b3p
-import unittest_extended as unittest
+import unittest_extended as unittest2
 
 # Import test target and map handler
 import src.awslamda.PasswordFileGet.lambda_handler as trg
 handler = trg.lambda_handler
 
 
-class LambdaPasswordFileGet(unittest.TestCase2):
+class LambdaPasswordFileGet(unittest2.TestCase2):
     lambda_event_name = {
         "OK": "PasswordFileGet",
         "Malformed": {
             "PasswordFileGet-Malformed-JSon",
             "PasswordFileGet-Malformed-UnexpectedMembers",
-            "PasswordFileGet-Malformed-MissingMember"
+            "PasswordFileGet-Malformed-MissingMembers"
         }
     }
 

@@ -1,8 +1,9 @@
 """Blackbox testing for API list Password Files"""
 import json
+import unittest
 
 import boto3patch as b3p
-import unittest_extended as unittest
+import unittest_extended as unittest2
 
 # Import test target and map handler
 import src.awslamda.PasswordFileList.lambda_handler as trg
@@ -10,7 +11,7 @@ import src.awslamda.PasswordFileList.lambda_handler as trg
 handler = trg.lambda_handler
 
 
-class LambdaPasswordFileList(unittest.TestCase2):
+class LambdaPasswordFileList(unittest2.TestCase2):
     lambda_event_name = {
         "OK": "PasswordFileList",
         "Malformed": {"PasswordFileList-Malformed"}
@@ -55,7 +56,6 @@ class LambdaPasswordFileList(unittest.TestCase2):
             "body": str
         }
         expected_body = {
-            "file_name": str,
             "status_code": int,
             "error_message": str,
         }
@@ -80,7 +80,6 @@ class LambdaPasswordFileList(unittest.TestCase2):
             "body": str
         }
         expected_body = {
-            "file_name": str,
             "status_code": int,
             "error_message": str,
         }
